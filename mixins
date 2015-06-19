@@ -1,0 +1,72 @@
+/* MIXINS ___________________________________________*/
+
+// Box Sizing
+
+@mixin box-sizing($box-model) {
+	-webkit-box-sizing: $box-model;
+	-moz-box-sizing: $box-model;
+	box-sizing: $box-model;
+}
+
+// Border Radius
+
+@mixin border-radius($radius) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	-ms-border-radius: $radius;
+	border-radius: $radius; 
+}
+
+// List Styles
+
+@mixin unordered {
+	list-style-position: outside; 
+	list-style-type: disc;
+}
+
+@mixin unordered-inside {
+	list-style-position: inside; 
+	list-style-type: disc;
+}
+
+@mixin ordered {
+	list-style-position: outside; 
+	list-style-type: decimal;
+}
+
+@mixin ordered-inside {
+	list-style-position: inside;
+	list-style-type: decimal;
+}
+
+@mixin nobullet {
+	list-style-type: none;
+}
+
+// Transitions
+
+@mixin _transition($prop:all, $duration:0.2s, $timing:ease-in-out, $delay:0s) {
+	@include transition($prop $duration $timing $delay);
+}
+
+// Vertical Align
+
+@mixin vertical-align {
+	position: relative;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+// Clearfix
+
+@mixin clearfix {
+	&:before, &:after{
+		display: table;
+		content: "";
+  }
+  &:after {
+		clear: both;
+  }
+}
