@@ -43,10 +43,85 @@
 	list-style-type: none;
 }
 
+// Rem font size with pixel fallback
+
+@function calculateRem($size) {
+	$remSize: $size / 16px;
+	@return $remSize * 1rem;
+}
+
+@mixin font-size($size) {
+	font-size: $size;
+	font-size: calculateRem($size);
+}
+
 // Transitions
 
 @mixin _transition($prop:all, $duration:0.2s, $timing:ease-in-out, $delay:0s) {
 	@include transition($prop $duration $timing $delay);
+}
+
+// SVG Fallback
+
+$image-path: '../img' !default;
+$fallback-extension: 'png' !default;
+$retina-suffix: '@2x';
+@mixin background-image($name, $size:false){
+	background-image: url(#{$image-path}/#{$name}.svg);
+	@if($size){
+		background-size: $size;
+    }
+    .no-svg &{
+		background-image: url(#{$image-path}/#{$name}.#{$fallback-extension});
+
+        @media only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+          background-image: url(#{$image-path}/#{$name}#{$retina-suffix}.#{$fallback-extension});
+        }
+    }
+}
+
+body {
+	@include background-image('pattern');
+}
+
+// Animations and Key Frames
+
+@mixin keyframes($animation-name) {
+	@-webkit-keyframes $animation-name {
+		@content;
+	}
+	@-moz-keyframes $animation-name {
+    	@content;
+  	}  
+  	@-ms-keyframes $animation-name {
+    	@content;
+  	}
+  	@-o-keyframes $animation-name {
+		@content;
+  	}  
+  	@keyframes $animation-name {
+    	@content;
+  	}
+}
+
+@mixin animation($str) {
+	-webkit-animation: #{$str};
+	-moz-animation: #{$str};
+	-ms-animation: #{$str};
+	-o-animation: #{$str};
+	animation: #{$str};      
+}
+
+@include keyframes(slide-down) {
+	0% { opacity: 1; }
+	90% { opacity: 0; }
+}
+
+.element {
+	width: 100px;
+	height: 100px;
+	background: black;
+	@include animation('slide-down 5s 3');
 }
 
 // Alignment
